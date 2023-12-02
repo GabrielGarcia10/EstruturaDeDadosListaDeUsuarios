@@ -126,6 +126,7 @@ public class DBGerenciador {
                 this.ultimo = anterior;
             }
         }
+        System.gc();
         //System.out.println("Usuario removido da posicao " + pos + ".");
     }
 
