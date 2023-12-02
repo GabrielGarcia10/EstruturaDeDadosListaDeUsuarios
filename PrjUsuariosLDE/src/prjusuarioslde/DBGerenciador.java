@@ -224,17 +224,31 @@ public class DBGerenciador {
                 s = 1;
                 temp = this.primeiro;
                 this.primeiro = this.primeiro.getProximo();
+                this.primeiro.setAnterior(null);
+                
                 temp.setProximo(this.primeiro.getProximo());
+                temp.setAnterior(this.primeiro);
+                
+                if(temp.getProximo() != null)
+                    temp.getProximo().setAnterior(temp);
+                
                 this.primeiro.setProximo(temp);
             }
-            for(i = 0, noh = this.primeiro; i < length-2; i++, noh = noh.getProximo()){
-                NohAtual = noh.getProximo();
-                 if( action.apply(new Usuario[] {NohAtual, NohAtual.getProximo()}) >= 1){
+            for(i = 0, noh = this.primeiro; i < length-1; i++, noh = noh.getProximo()){
+                //NohAtual = noh.getProximo();
+                 if( action.apply(new Usuario[] {noh, noh.getProximo()}) >= 1){
                     s = 1;
-                    temp = NohAtual.getProximo();
+                    /*temp = NohAtual.getProximo();
                     NohAtual.setProximo(temp.getProximo());
                     temp.setProximo(NohAtual);
+                    noh.setProximo(temp);*/
+                    temp = noh.getProximo().getProximo();
+                    noh.getAnterior().setProximo(noh.getProximo());
+                    noh.getProximo().setAnterior(noh.getAnterior());
+                    noh.getProximo().setProximo(noh);
+                    noh.setAnterior(noh.getProximo());
                     noh.setProximo(temp);
+                    
                 }
             }
         }
