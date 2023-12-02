@@ -4,17 +4,28 @@
  */
 package prjusuarioslde;
 
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author GabrielVM
  */
 public class ListarForm extends javax.swing.JFrame {
 
+    private DBGerenciador listUsers;
+    private DefaultTableModel tableModel;
+    
     /**
      * Creates new form ListarUsuarios
      */
     public ListarForm() {
+        tableModel = new DefaultTableModel();
+        listUsers = new DBGerenciador();
         initComponents();
+        formUtilities.centerScreen(this);
+        this.updateData();
+        lbl_readOnly.setVisible(false);
     }
 
     /**
@@ -27,79 +38,114 @@ public class ListarForm extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        tableUsuarios = new javax.swing.JTable();
+        comboBoxOrdenar = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        btn_cadastrar = new javax.swing.JButton();
+        btn_editar = new javax.swing.JButton();
+        btn_remover = new javax.swing.JButton();
+        btnOrdenar = new javax.swing.JButton();
+        comboBoxFiltro = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
+        lbl_readOnly = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableUsuarios.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Nome", "Idade", "Sexo"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nome", "Idade" }));
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        tableUsuarios.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(tableUsuarios);
+
+        comboBoxOrdenar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nome", "Idade" }));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Lista de Usuários");
 
-        jButton1.setText("Cadastrar");
+        btn_cadastrar.setText("Cadastrar");
+        btn_cadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_cadastrarActionPerformed(evt);
+            }
+        });
 
-        jButton2.setText("Editar");
+        btn_editar.setText("Editar");
+        btn_editar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_editarActionPerformed(evt);
+            }
+        });
 
-        jButton3.setText("Remover");
+        btn_remover.setText("Remover");
+        btn_remover.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_removerActionPerformed(evt);
+            }
+        });
 
-        jButton4.setText("Ordenar");
+        btnOrdenar.setText("Ordenar");
+        btnOrdenar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOrdenarActionPerformed(evt);
+            }
+        });
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Masculino", "Feminino" }));
+        comboBoxFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Masculino", "Feminino" }));
+        comboBoxFiltro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboBoxFiltroActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Filtro:");
+
+        lbl_readOnly.setText("*Somente leitura");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(231, 231, 231)
-                .addComponent(jLabel1)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(177, 177, 177)
-                        .addComponent(jButton1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton2)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton3)
-                        .addGap(209, 209, 209))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addContainerGap())))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4)
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(lbl_readOnly)
+                                .addGap(99, 99, 99)
+                                .addComponent(btn_cadastrar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btn_editar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btn_remover, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(203, 203, 203))
+                            .addComponent(jScrollPane1)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(comboBoxFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(comboBoxOrdenar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnOrdenar)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -107,25 +153,116 @@ public class ListarForm extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comboBoxOrdenar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnOrdenar)
+                    .addComponent(comboBoxFiltro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
-                .addGap(18, 18, 18))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbl_readOnly)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btn_cadastrar)
+                        .addComponent(btn_editar)
+                        .addComponent(btn_remover)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btn_cadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cadastrarActionPerformed
+        // TODO add your handling code here:
+        CadEditUsuario editForm = new CadEditUsuario(listUsers, this);
+        editForm.setVisible(true);
+    }//GEN-LAST:event_btn_cadastrarActionPerformed
+
+    private void btn_editarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editarActionPerformed
+        // TODO add your handling code here:
+        CadEditUsuario editForm = new CadEditUsuario(listUsers, this);
+        int selectedLine = tableUsuarios.getSelectedRow()+1;
+        if(selectedLine <= 0){
+            JOptionPane.showMessageDialog(rootPane, "Selecione um item da lista!");
+            return;
+        }
+        editForm.setEditUser(listUsers.buscarPosicao(selectedLine));
+        editForm.setVisible(true);
+    }//GEN-LAST:event_btn_editarActionPerformed
+
+    private void btn_removerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_removerActionPerformed
+        // TODO add your handling code here:
+        int selectedLine = tableUsuarios.getSelectedRow()+1;
+        if(selectedLine <= 0){
+            JOptionPane.showMessageDialog(rootPane, "Selecione um item da lista!");
+            return;
+        }
+        listUsers.removerPosicao(selectedLine);
+        this.updateData();
+    }//GEN-LAST:event_btn_removerActionPerformed
+
+    private void btnOrdenarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrdenarActionPerformed
+        // TODO add your handling code here:
+        if(comboBoxOrdenar.getModel().getSelectedItem() == "Nome"){
+            listUsers.ordenarporNome();
+        }else{
+            listUsers.ordenarporIdade();
+        }
+        this.updateData();
+    }//GEN-LAST:event_btnOrdenarActionPerformed
+
+    private void comboBoxFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxFiltroActionPerformed
+        // TODO add your handling code here:
+        if(comboBoxFiltro.getModel().getSelectedItem() == "Todos"){
+            this.updateData();
+            this.readOnly(false);
+        }
+        if(comboBoxFiltro.getModel().getSelectedItem() == "Masculino"){
+            this.updateData(listUsers.separarPorSexo().get('M'));
+            this.readOnly(true);
+        }
+        if(comboBoxFiltro.getModel().getSelectedItem() == "Feminino"){
+            this.updateData(listUsers.separarPorSexo().get('F'));
+            this.readOnly(true);
+        }
+    }//GEN-LAST:event_comboBoxFiltroActionPerformed
+    
+    public void updateData(){
+        String[] colsName = {"Nome", "Idade", "Sexo"};
+        tableModel = new DefaultTableModel(colsName,0);
+        listUsers.forEach(item -> {
+            String[] line = {item.getNome(), String.valueOf(item.getIdade()), String.valueOf(item.getSexo())};
+            tableModel.addRow(line);
+        });
+        tableUsuarios.setModel(tableModel);
+    }
+    
+    private void updateData(DBGerenciador list){ 
+        String[] colsName = {"Nome", "Idade", "Sexo"};
+        if(list == null){
+            tableModel = new DefaultTableModel(colsName,0);
+            tableUsuarios.setModel(tableModel);
+            return;
+        }
+        tableModel = new DefaultTableModel(colsName,0);
+        list.forEach(item -> {
+            String[] line = {item.getNome(), String.valueOf(item.getIdade()), String.valueOf(item.getSexo())};
+            tableModel.addRow(line);
+        });
+        tableUsuarios.setModel(tableModel);
+    }
+    
+    private void readOnly(boolean v){
+        btn_cadastrar.setEnabled(!v);
+        btn_editar.setEnabled(!v);
+        btn_remover.setEnabled(!v);
+        btnOrdenar.setEnabled(!v);
+        comboBoxOrdenar.setEnabled(!v);
+        lbl_readOnly.setVisible(v);
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -163,15 +300,16 @@ public class ListarForm extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JButton btnOrdenar;
+    private javax.swing.JButton btn_cadastrar;
+    private javax.swing.JButton btn_editar;
+    private javax.swing.JButton btn_remover;
+    private javax.swing.JComboBox<String> comboBoxFiltro;
+    private javax.swing.JComboBox<String> comboBoxOrdenar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel lbl_readOnly;
+    private javax.swing.JTable tableUsuarios;
     // End of variables declaration//GEN-END:variables
 }
