@@ -152,6 +152,11 @@ public class CadEditUsuario extends javax.swing.JFrame {
         // TODO add your handling code here:
         if(txt_nome.getText().equals("") && txt_idade.getText().equals("")){
             JOptionPane.showMessageDialog(rootPane, "Preencha os campos de nome e idade!");
+            return;
+        }
+        if(!txt_idade.getText().matches("[0-9]*")){
+            JOptionPane.showMessageDialog(rootPane, "Digite apenas números na idade!");
+            return;
         }
         String sexo = (comboBox_sexo.getModel().getSelectedItem().toString().equals("Masculino"))?"M":"F";
         if(editUser == null)
